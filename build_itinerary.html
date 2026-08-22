@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4">
+    <span class="eyebrow">Step 2 of 3</span>
+    <h3>Build Itinerary — {{ trip.place }}</h3>
+    <p class="text-muted mb-0">Break your trip into sections: hotel, travel, activities — whatever helps you plan and budget.</p>
+</div>
+
+{% if sections %}
+    {% for s in sections %}
+    <div class="section-card">
+        <div>
+            <div class="fw-semibold" style="font-family:'Poppins',sans-serif;">{{ s.title }}</div>
+            <div class="text-muted small"><i class="bi bi-calendar3"></i> {{ s.date_range or 'No dates set' }}</div>
+        </div>
+        <div class="budget-tag">₹{{ s.budget }}</div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="gt-card text-center py-4 mb-3">
+        <p class="text-muted mb-0">No sections yet — add your first one below</p>
+    </div>
+{% endif %}
+
+<div class="gt-card mt-3">
+    <span class="eyebrow">New section</span>
+    <h6 class="mt-1 mb-3">Add another section</h6>
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-5 mb-2">
+                <label>Section Title</label>
+                <input type="text" name="title" class="form-control" placeholder="Hotel, travel, activity..." required>
+            </div>
+            <div class="col-md-4 mb-2">
+                <label>Date Range</label>
+                <input type="text" name="date_range" class="form-control" placeholder="e.g. 12 Jan - 15 Jan">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label>Budget</label>
+                <input type="text" name="budget" class="form-control" placeholder="₹ amount">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-purple mt-2"><i class="bi bi-plus-lg"></i> Add Section</button>
+    </form>
+</div>
+
+<a href="{{ url_for('itinerary_view', trip_id=trip.id) }}" class="btn btn-purple mt-4">Go to Itinerary View <i class="bi bi-arrow-right"></i></a>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4">
+    <span class="eyebrow">Step 1 of 3</span>
+    <h3>Plan a new trip</h3>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-7">
+        <div class="gt-card">
+            <form method="POST">
+                <div class="mb-3">
+                    <label><i class="bi bi-geo-alt"></i> Select a Place</label>
+                    <input type="text" name="place" class="form-control" placeholder="e.g. Goa, Manali..." required>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label><i class="bi bi-calendar-event"></i> Start Date</label>
+                        <input type="date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="col mb-3">
+                        <label><i class="bi bi-calendar-check"></i> End Date</label>
+                        <input type="date" name="end_date" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-purple w-100 mt-2">Continue to Itinerary <i class="bi bi-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="gt-card h-100">
+            <span class="eyebrow">Get inspired</span>
+            <h6 class="mb-3">Suggested Places</h6>
+            {% for place in ['Santorini','Kerala Backwaters','Swiss Alps'] %}
+            <div class="dest-card mb-2" style="height:80px; background-image:url('https://picsum.photos/seed/{{ place|replace(' ','') }}/300/150');">
+                <span>{{ place }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4">
+    <span class="eyebrow">Overview</span>
+    <h3>My Trips</h3>
+</div>
+
+{% macro trip_card(entry) %}
+<div class="trip-ticket">
+    <div class="stub-img" style="background-image:url('https://picsum.photos/seed/{{ entry.trip.place|replace(' ','') }}{{ entry.trip.id }}/260/260');"></div>
+    <div class="stub-body w-100">
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="stub-place">{{ entry.trip.place }}</div>
+                <div class="stub-dates"><i class="bi bi-calendar3"></i> {{ entry.trip.start_date }} &rarr; {{ entry.trip.end_date }}</div>
+            </div>
+            <a href="{{ url_for('itinerary_view', trip_id=entry.trip.id) }}" class="btn btn-sm btn-outline-purple align-self-start">View</a>
+        </div>
+        <div class="progress-thin"><div class="fill" style="width:{{ entry.info.percent }}%;"></div></div>
+        <div class="text-muted mt-1" style="font-size:0.75rem;">{{ entry.info.days }} Days &middot; {{ entry.info.percent }}%</div>
+    </div>
+</div>
+{% endmacro %}
+
+<h6 class="mb-3"><span class="status-pill status-ongoing">Ongoing</span></h6>
+{% for e in ongoing %}{{ trip_card(e) }}{% else %}<p class="text-muted small">Nothing ongoing right now</p>{% endfor %}
+
+<h6 class="mb-3 mt-4"><span class="status-pill status-upcoming">Upcoming</span></h6>
+{% for e in upcoming %}{{ trip_card(e) }}{% else %}<p class="text-muted small">No upcoming trips</p>{% endfor %}
+
+<h6 class="mb-3 mt-4"><span class="status-pill status-completed">Completed</span></h6>
+{% for e in completed %}{{ trip_card(e) }}{% else %}<p class="text-muted small">No completed trips yet</p>{% endfor %}
+{% endblock %}

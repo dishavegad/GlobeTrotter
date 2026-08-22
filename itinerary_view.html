@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <div>
+        <span class="eyebrow">Step 3 of 3</span>
+        <h3>Itinerary — {{ trip.place }}</h3>
+    </div>
+    <div class="gt-card py-2 px-3 text-center" style="min-width:150px;">
+        <div class="text-muted small">Total Expense</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:1.25rem; color:var(--purple); font-weight:700;">₹{{ total_expense }}</div>
+        {% if section_budget %}
+        <div class="text-muted" style="font-size:0.72rem;">of ₹{{ section_budget|int }} planned</div>
+        {% endif %}
+    </div>
+</div>
+
+{% for day_num, items in days.items() %}
+<div class="mb-4">
+    <div class="d-flex align-items-center mb-2">
+        <span class="day-badge">{{ day_num }}</span>
+        <span style="font-family:'Poppins',sans-serif; font-weight:600;">Day {{ day_num }}</span>
+    </div>
+    {% for i in items %}
+    <div class="activity-row">
+        <div><i class="bi bi-geo-alt text-muted me-2"></i>{{ i.activity }}</div>
+        <div class="expense-pill">₹{{ i.expense }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="gt-card text-center py-4 mb-4">
+    <p class="text-muted mb-0">No activities added yet — add your first one below</p>
+</div>
+{% endfor %}
+
+<div class="gt-card">
+    <span class="eyebrow">Add to itinerary</span>
+    <h6 class="mt-1 mb-3">Add Activity</h6>
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-2 mb-2">
+                <label>Day</label>
+                <input type="number" name="day_number" class="form-control" min="1" required>
+            </div>
+            <div class="col-md-7 mb-2">
+                <label>Activity</label>
+                <input type="text" name="activity" class="form-control" placeholder="e.g. City tour, beach visit..." required>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label>Expense</label>
+                <input type="text" name="expense" class="form-control" placeholder="₹ amount">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-purple mt-2"><i class="bi bi-plus-lg"></i> Add Activity</button>
+    </form>
+</div>
+{% endblock %}
