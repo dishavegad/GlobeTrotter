@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="gt-card mb-4">
+    <div class="d-flex align-items-center">
+        <div class="avatar-lg me-3" style="background-image:url('https://picsum.photos/seed/user{{ user.id }}/160/160');"></div>
+        <div>
+            <h4 class="mb-0">{{ user.name }}</h4>
+            <div class="text-muted"><i class="bi bi-envelope"></i> {{ user.email }}</div>
+            <div class="text-muted small mt-1">@{{ user.username }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"><span class="eyebrow">Ahead of you</span><h5 class="mb-0">Preplanned Trips</h5></div>
+{% if preplanned %}
+<div class="row g-3 mb-4">
+    {% for t in preplanned %}
+    <div class="col-md-4">
+        <div class="gt-card p-0" style="overflow:hidden;">
+            <div style="height:110px; background-size:cover; background-position:center; background-image:url('https://picsum.photos/seed/{{ t.place|replace(' ','') }}{{ t.id }}/300/200');"></div>
+            <div class="p-3">
+                <div class="stub-place">{{ t.place }}</div>
+                <div class="stub-dates mb-2">{{ t.start_date }} &rarr; {{ t.end_date }}</div>
+                <a href="{{ url_for('itinerary_view', trip_id=t.id) }}" class="btn btn-sm btn-outline-purple w-100">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="gt-card text-center py-3 mb-4"><p class="text-muted mb-0">No upcoming trips planned</p></div>
+{% endif %}
+
+<div class="mb-3"><span class="eyebrow">Been there</span><h5 class="mb-0">Previous Trips</h5></div>
+{% if previous %}
+<div class="row g-3">
+    {% for t in previous %}
+    <div class="col-md-4">
+        <div class="gt-card p-0" style="overflow:hidden;">
+            <div style="height:110px; background-size:cover; background-position:center; filter:grayscale(30%); background-image:url('https://picsum.photos/seed/{{ t.place|replace(' ','') }}{{ t.id }}/300/200');"></div>
+            <div class="p-3">
+                <div class="stub-place">{{ t.place }}</div>
+                <div class="stub-dates mb-2">{{ t.start_date }} &rarr; {{ t.end_date }}</div>
+                <a href="{{ url_for('itinerary_view', trip_id=t.id) }}" class="btn btn-sm btn-outline-purple w-100">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="gt-card text-center py-3"><p class="text-muted mb-0">No previous trips yet</p></div>
+{% endif %}
+{% endblock %}
