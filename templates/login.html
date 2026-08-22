@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block auth_content %}
+<div class="auth-bg">
+    <div class="glass-card">
+        <a href="{{ url_for('login') }}" class="brand d-inline-flex mb-3" style="color:var(--dark);">
+            <i class="bi bi-compass" style="color:var(--purple);"></i>GlobeTrotter
+        </a>
+        <h3>Welcome back</h3>
+        <p class="text-muted mb-4">Login to continue planning your trips</p>
+        <form method="POST">
+            <div class="mb-3">
+                <label>Username or Email</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-purple w-100">Login</button>
+        </form>
+        <p class="text-center mt-4 mb-0 text-muted">
+            New here? <a href="{{ url_for('register') }}" style="color:var(--purple); font-weight:600;">Create an account</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

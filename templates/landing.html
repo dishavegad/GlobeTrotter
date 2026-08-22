@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="top-row">
+    <div>
+        <h4 class="mb-0">Good morning, {{ session.get('user_name','Traveller').split(' ')[0] }} 👋</h4>
+        <p class="text-muted mb-0" style="font-size:0.9rem;">Where do you want to go next?</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <div class="top-search">
+            <i class="bi bi-search text-muted"></i>
+            <input type="text" placeholder="Search for trips, places...">
+        </div>
+        <div class="bell-btn"><i class="bi bi-bell"></i></div>
+        <div class="topbar-avatar" style="background-image:url('https://picsum.photos/seed/user{{ session.user_id }}/80/80');"></div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-8">
+        <div class="gt-hero" style="background-image:url('https://picsum.photos/seed/globetrotter-hero/900/400');">
+            <div class="gt-hero-content">
+                <span class="eyebrow" style="color:rgba(255,255,255,0.8);">Explore. Plan. Experience.</span>
+                <h1>Plan smart itineraries, track budgets, and travel better.</h1>
+                <a href="{{ url_for('create_trip') }}" class="btn btn-light mt-2 fw-semibold" style="border-radius:24px; color:var(--purple);">
+                    <i class="bi bi-plus-lg"></i> Plan a New Trip
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="gt-card h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                    <span class="eyebrow">Itinerary preview</span>
+                    {% if latest_trip %}<h6 class="mb-0">{{ latest_trip.place }}</h6>{% endif %}
+                </div>
+            </div>
+            {% if latest_trip and preview_items %}
+                {% for i in preview_items %}
+                <div class="d-flex align-items-center mb-2">
+                    <span class="day-badge" style="width:26px; height:26px; font-size:0.7rem;">{{ i.day_number }}</span>
+                    <span style="font-size:0.85rem;">{{ i.activity }}</span>
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('itinerary_view', trip_id=latest_trip.id) }}" class="btn btn-outline-purple btn-sm w-100 mt-2">View Full Itinerary</a>
+            {% else %}
+                <p class="text-muted small mb-0">No itinerary yet — plan a trip to see a preview here.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+        <div class="stat-card"><div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+            <div><div class="stat-num">{{ upcoming_count }}</div><div class="stat-label">Upcoming Trips</div></div></div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card"><div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
+            <div><div class="stat-num">{{ completed_count }}</div><div class="stat-label">Completed Trips</div></div></div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card"><div class="stat-icon"><i class="bi bi-globe-asia-australia"></i></div>
+            <div><div class="stat-num">{{ countries_count }}</div><div class="stat-label">Places Visited</div></div></div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card"><div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+            <div><div class="stat-num">{{ total_days }}</div><div class="stat-label">Total Days Traveled</div></div></div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><span class="eyebrow">Your journeys</span><h5 class="mb-0">Upcoming Trips</h5></div>
+            <a href="{{ url_for('trip_listing') }}" class="btn btn-sm btn-outline-purple">View All</a>
+        </div>
+        {% if trip_cards %}
+            {% for tc in trip_cards %}
+            <div class="trip-ticket">
+                <div class="stub-img" style="background-image:url('https://picsum.photos/seed/{{ tc.trip.place|replace(' ','') }}{{ tc.trip.id }}/260/260');"></div>
+                <div class="stub-body w-100">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stub-place">{{ tc.trip.place }}</div>
+                            <div class="stub-dates"><i class="bi bi-calendar3"></i> {{ tc.trip.start_date }} &rarr; {{ tc.trip.end_date }}</div>
+                        </div>
+                        <a href="{{ url_for('itinerary_view', trip_id=tc.trip.id) }}" class="btn btn-sm btn-outline-purple align-self-start">View</a>
+                    </div>
+                    <div class="progress-thin"><div class="fill" style="width:{{ tc.info.percent }}%;"></div></div>
+                    <div class="text-muted mt-1" style="font-size:0.75rem;">{{ tc.info.days }} Days &middot; {{ tc.info.percent }}%</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="gt-card text-center py-4">
+                <i class="bi bi-airplane" style="font-size:1.6rem; color:var(--purple);"></i>
+                <p class="text-muted mt-2 mb-0">No trips yet. Start planning your first one!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="gt-card">
+            <span class="eyebrow">Spending overview</span>
+            <h6 class="mb-3">Budget Planner</h6>
+            {% if donut_segments %}
+            <div class="d-flex align-items-center gap-3">
+                <div class="donut" style="background:{{ conic_css }};">
+                    <div class="donut-center">
+                        <div class="amt">₹{{ total_budget|int }}</div>
+                        <div class="lbl">Total</div>
+                    </div>
+                </div>
+                <div>
+                    {% for seg in donut_segments %}
+                    <div class="legend-row">
+                        <span class="legend-dot" style="background:{{ seg.color }};"></span>
+                        {{ seg.title }} &middot; ₹{{ seg.budget|int }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <p class="text-muted small mb-0">Add sections to a trip to see your budget breakdown here.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"><span class="eyebrow">Discover</span><h5 class="mb-0">Top Regional Selections</h5></div>
+<div class="row g-3">
+    {% for city in ['Bali','Kyoto','Cape Town','Reykjavik','Marrakech'] %}
+    <div class="col">
+        <div class="dest-card" style="background-image:url('https://picsum.photos/seed/{{ city|replace(' ','') }}/300/200');">
+            <span>{{ city }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
