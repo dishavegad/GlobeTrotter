@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-wrap">
+    <div class="auth-side">
+        <div class="dots"></div>
+        <span class="eyebrow" style="color:rgba(255,255,255,0.7)">Join the journey</span>
+        <h1 class="mt-2">Every trip starts<br>with an account.</h1>
+        <p class="mt-3">Save your itineraries, track expenses and revisit past adventures anytime.</p>
+    </div>
+    <div class="auth-form-side">
+        <div class="auth-card" style="max-width:480px;">
+            <div class="mb-4">
+                <a href="{{ url_for('login') }}" class="brand" style="font-size:1.3rem;"><i class="bi bi-compass" style="color:var(--coral)"></i>GlobeTrotter</a>
+            </div>
+            <h3>Create your account</h3>
+            <p class="text-muted mb-4">Takes less than a minute</p>
+            <form method="POST">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" class="form-control" required>
+                    </div>
+                    <div class="col mb-3">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="col mb-3">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label>City</label>
+                        <input type="text" name="city" class="form-control">
+                    </div>
+                    <div class="col mb-3">
+                        <label>Country</label>
+                        <input type="text" name="country" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-coral w-100">Register</button>
+            </form>
+            <p class="text-center mt-4 mb-0 text-muted">
+                Already have an account? <a href="{{ url_for('login') }}" style="color:var(--teal); font-weight:600;">Login</a>
+            </p>
+        </div>
+    </div>
+</div>
